@@ -40,7 +40,7 @@ public class KakaoClientExternalAdapter implements KakaoBlogSearchPort, ClientRe
 
     @Override
     public SearchBlog sendBlogSearch(String query, String sort, Integer page, Integer size) {
-        URI connUrl = UriComponentsBuilder.fromUriString("/v2/search/log")
+        URI connUrl = UriComponentsBuilder.fromUriString("/v2/search/blog")
                 .queryParam("query", query)
                 .queryParam("sort", ParamCommand.getParamCommand(sort).getKakaoSortVal())
                 .queryParam("page", page)

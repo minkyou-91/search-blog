@@ -27,8 +27,7 @@ public class ExternalPortFactory {
             final Integer key = mapperKey(extPort.getPriority());
             this.externalPortMapper.put(key, extPort);
 
-            log.info("key : {} , extPort : {} ", key, extPort);
-
+            log.info("우선순위 : {} , extPort : {} ", key, extPort);
         }
     }
 

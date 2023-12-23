@@ -1,18 +1,36 @@
 package com.searchblog.api.adpater.out.persistence;
 
 import com.searchblog.global.entity.BaseDateTimeEntity;
-import lombok.Getter;
+import lombok.*;
+import org.springframework.data.domain.Persistable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-@Table
 @Entity
-@Getter
-public class QueryEntity extends BaseDateTimeEntity {
+@Table(name = "POPULAR_QUERY")
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class QueryEntity extends BaseDateTimeEntity implements Persistable {
     @Id
-    private Long id;
+    @Column(name = "QUERY_TEXT")
     private String queryText;
-    private Long searchCnt;
+    @Column(name = "SEARCH_COUNT")
+    private Long searchCount;
+
+    public void updateSearchCount(){
+        this.searchCount++;
+    }
+
+    @Override
+    public Object getId() {
+        return queryText;
+    }
+    @Override
+    public boolean isNew() {
+        return true;
+    }
 }

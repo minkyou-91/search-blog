@@ -5,6 +5,8 @@ import com.searchblog.api.application.port.in.usecase.SearchBlogUsecase;
 import com.searchblog.api.application.port.out.external.ExternalPort;
 import com.searchblog.api.application.port.out.external.KakaoBlogSearchPort;
 import com.searchblog.api.application.port.out.external.NaverBlogSearchPort;
+import com.searchblog.api.application.port.out.persistence.SaveQueryPort;
+import com.searchblog.api.domain.Query;
 import com.searchblog.api.domain.SearchBlog;
 import com.searchblog.global.dto.BaseResponse;
 import com.searchblog.global.enums.ErrorCode;
@@ -31,6 +33,8 @@ import java.util.List;
 public class SearchBlogService implements SearchBlogUsecase {
 
     private final ExternalPortFactory externalPortFactory;
+    private final SaveQueryPort saveQueryPort;
+
 //    private final KakaoBlogSearchPort kakaoBlogSearchPort;
 //    private final NaverBlogSearchPort naverBlogSearchPort;
 
@@ -41,37 +45,40 @@ public class SearchBlogService implements SearchBlogUsecase {
         final Integer page = searchBlogComand.getPage();
         final Integer size = searchBlogComand.getSize();
 
+        /**
+         * PersistencePort saveQuery start
+         */
+        saveQueryPort.saveQuery(query);
 
         /**
-         * 주입된 ExternalOuputFactory Mapper의 우선순위대로 정렬 -> keySet
+         * 1. 주입된 ExternalOuputFactory ExternalOutport 우선순위(Priority) 정렬
+         * 2. keySet 순서대로 ExternalOutport searchBlog start
          */
         List<Integer> keySet = new ArrayList<>(externalPortFactory.getExternalPortMapper().keySet());
         Collections.sort(keySet);
-        SearchBlog searchBlog = null;
 
+        SearchBlog searchBlog = null;
         for (Integer key : keySet) {
             if (externalPortFactory.getExternalPortMapper().get(key) instanceof ExternalPort) {
-                try{
-                    final String externalPortNm = ((ExternalPort) externalPortFactory.getExternalPortMapper().get(key)).getServiceDvdNm().toString();
-                    log.info("ExternalPortServiceName : {}" ,externalPortNm);
-
+                try {
                     searchBlog = ((ExternalPort) externalPortFactory.getExternalPortMapper().get(key)).sendBlogSearch(query, sort, page, size);
-                    if(!ObjectUtils.isEmpty(searchBlog)){
+                    if (!ObjectUtils.isEmpty(searchBlog)) {
                         // 정상 리턴되는 결과가 있다면 break
                         break;
                     }
-                } catch (CustomWebClientRequestException | CustomWebClientResponseException | CustomWebClientTimeoutException e){
+                } catch (CustomWebClientRequestException | CustomWebClientResponseException |
+                         CustomWebClientTimeoutException e) {
                     // 외부 통신 API 문제 발생 시 후처리
-                    if(key == externalPortFactory.getExternalPortMapper().size()){ // for문 종료될떄가지 성공하지 못하면 Custom Exception으로 던진다.
-                        if(e instanceof WebClientRequestException){
+                    if (key == externalPortFactory.getExternalPortMapper().size()) { // for문 종료될떄가지 성공하지 못하면 Custom Exception으로 던진다.
+                        if (e instanceof WebClientRequestException) {
                             throw new CustomException(ErrorCode.HTTP_STATUS_501);
-                        } else if(e instanceof WebClientResponseException) {
+                        } else if (e instanceof WebClientResponseException) {
                             throw new CustomException(ErrorCode.HTTP_STATUS_503);
                         } else {
                             throw new CustomException(ErrorCode.HTTP_STATUS_504);
                         }
                     }
-                } catch (Exception e){
+                } catch (Exception e) {
                     throw new CustomException(ErrorCode.HTTP_STATUS_500, e.getMessage());
                 }
             }
