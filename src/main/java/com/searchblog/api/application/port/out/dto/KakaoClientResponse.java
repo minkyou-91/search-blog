@@ -1,5 +1,6 @@
 package com.searchblog.api.application.port.out.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -23,6 +24,7 @@ public class KakaoClientResponse extends ClientResponse {
     public static class Document {
         private String blogname;
         private String contents;
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
         private LocalDateTime datetime;
         private String thumbnail;
         private String title;

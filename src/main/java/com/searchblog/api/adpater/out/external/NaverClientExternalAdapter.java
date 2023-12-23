@@ -36,17 +36,6 @@ public class NaverClientExternalAdapter implements NaverBlogSearchPort, ClientRe
 
         NaverClientResponse response = webClientUseTemplate.httpGetSendRetrieve(naverClient, connUrl, NaverClientResponse.class);
 
-//        NaverClientResponse response = naverClient.get()
-//                .uri(uriBuilder -> uriBuilder
-//                        .path("/v1/search/blog.json")
-//                        .queryParam("query", query)
-//                        .queryParam("display", size)
-//                        .queryParam("start", page)
-//                        .queryParam("sort", ParamCommand.getParamCommand(sort).getNaverSortVal())
-//                        .build())
-//                .retrieve()
-//                .bodyToMono(NaverClientResponse.class)
-//                .block();
 
         return this.toDomain(response, sort, page, size);
     }

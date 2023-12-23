@@ -1,20 +1,19 @@
 package com.searchblog.api.adpater.out.external;
 
-import com.searchblog.global.infra.WebClientConfig2;
 import io.netty.channel.ChannelOption;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
+import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.resources.ConnectionProvider;
 
 import java.time.Duration;
 
-@Configuration
+@Component
 public class KakaoWebclient {
     @Value("${extsys.kakao.apikey}")
     private String apiKey;
@@ -28,7 +27,7 @@ public class KakaoWebclient {
         HttpClient httpClient =  HttpClient.create(this.getConntectionProvider())
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10000)
                 .doOnConnected(conn ->
-                        conn.addHandlerLast(new ReadTimeoutHandler(3))
+                        conn.addHandlerLast(new ReadTimeoutHandler(10))
                                 .addHandlerLast(new WriteTimeoutHandler(5)));
 
         WebClient client = WebClient.builder()

@@ -3,10 +3,7 @@ package com.searchblog.api.application.service;
 import com.searchblog.api.application.port.in.dto.SearchBlogComand;
 import com.searchblog.api.application.port.in.usecase.SearchBlogUsecase;
 import com.searchblog.api.application.port.out.external.ExternalPort;
-import com.searchblog.api.application.port.out.external.KakaoBlogSearchPort;
-import com.searchblog.api.application.port.out.external.NaverBlogSearchPort;
 import com.searchblog.api.application.port.out.persistence.SaveQueryPort;
-import com.searchblog.api.domain.Query;
 import com.searchblog.api.domain.SearchBlog;
 import com.searchblog.global.dto.BaseResponse;
 import com.searchblog.global.enums.ErrorCode;
@@ -61,6 +58,7 @@ public class SearchBlogService implements SearchBlogUsecase {
         for (Integer key : keySet) {
             if (externalPortFactory.getExternalPortMapper().get(key) instanceof ExternalPort) {
                 try {
+                    if(key.equals(1)) continue;
                     searchBlog = ((ExternalPort) externalPortFactory.getExternalPortMapper().get(key)).sendBlogSearch(query, sort, page, size);
                     if (!ObjectUtils.isEmpty(searchBlog)) {
                         // 정상 리턴되는 결과가 있다면 break

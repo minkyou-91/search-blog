@@ -8,16 +8,19 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class SearchPopQueryService implements SearchPopQueryUseCase {
     private final SearchPopQueryPort searchPopQueryPort;
+
     @Override
-    public BaseResponse searchPopQuery(String queryText) {
-        Query query = searchPopQueryPort.searchPopQuery(queryText);
+    public BaseResponse searchPopQuery() {
+        List<Query> queryPopList = searchPopQueryPort.searchPopQuery();
 
         return BaseResponse.builder()
                 .httpStatus(HttpStatus.OK)
-                .data(query).build();
+                .data(queryPopList).build();
     }
 }

@@ -2,6 +2,7 @@ package com.searchblog.global.exception;
 
 import com.searchblog.global.dto.ErrorResponse;
 import com.searchblog.global.enums.ErrorCode;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.http.ResponseEntity;

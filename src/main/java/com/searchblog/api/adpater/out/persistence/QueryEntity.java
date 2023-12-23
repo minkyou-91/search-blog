@@ -8,12 +8,14 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
 @Entity
 @Table(name = "POPULAR_QUERY")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper=false)
 public class QueryEntity extends BaseDateTimeEntity implements Persistable {
     @Id
     @Column(name = "QUERY_TEXT")
@@ -21,7 +23,7 @@ public class QueryEntity extends BaseDateTimeEntity implements Persistable {
     @Column(name = "SEARCH_COUNT")
     private Long searchCount;
 
-    public void updateSearchCount(){
+    public void updateSearchCount() {
         this.searchCount++;
     }
 
@@ -29,6 +31,7 @@ public class QueryEntity extends BaseDateTimeEntity implements Persistable {
     public Object getId() {
         return queryText;
     }
+
     @Override
     public boolean isNew() {
         return true;

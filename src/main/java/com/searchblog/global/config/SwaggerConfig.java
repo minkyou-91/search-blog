@@ -16,10 +16,11 @@ public class SwaggerConfig {
 
     @Bean
     public Docket restAPI() {
-        return new Docket(DocumentationType.SWAGGER_2)
+        return new Docket(DocumentationType.OAS_30)
+                .useDefaultResponseMessages(false)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.searchblog.api"))
+                .apis(RequestHandlerSelectors.basePackage("com.searchblog"))
                 .paths(PathSelectors.any())
                 .build();
     }
@@ -27,7 +28,7 @@ public class SwaggerConfig {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("Search-Blog-Apis")
-                .version("0.0.1")
+                .version("1.0.0")
                 .description("블로그 검색 서비스 SearchBlog의 API 문서입니다.")
                 .build();
     }

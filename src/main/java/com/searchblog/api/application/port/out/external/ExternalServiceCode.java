@@ -1,5 +1,5 @@
 package com.searchblog.api.application.port.out.external;
 
-public enum ExternalService {
+public enum ExternalServiceCode {
     KAKAO, NAVER
 }
