@@ -21,7 +21,7 @@
 
 
 ## *** 실행파일 
-- [search-blog-parkminkyou-0.0.1-SNAPSHOT.jar](https://github.com/minkyou-91/search-blog.git) 다운로드
+- [search-blog-parkminkyou-0.0.1-SNAPSHOT.jar](https://github.com/minkyou-91/search-blog/blob/main/search-blog-minkyou-0.0.1-SNAPSHOT.jar) 다운로드
 
 <br></br>
 
