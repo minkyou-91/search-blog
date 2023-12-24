@@ -76,15 +76,6 @@
   - 이때 ExternalAdapter에서 외부 통신시 장애가 발생할 경우, Exception Catch에서 다음 ExternalOutPort로 수행되도록 하였습니다.
   - ExternalPortFactory 전체를 다 수행한 후에도 에러가 발생시 CustomException으로 throw 합니다.
 
-<br></br>
-
-## *** 예외 처리
-
-- 서비스, 비즈니스의 모든 CheckedException은 CustomException으로 구현
-- CustomExceptionHandler 통해 Responseentity.status.body(ErrorResponse)형태로 리턴
-- ConstraintViolationException 필수파라미터 검증시 발생하는 오류도 핸들러에서 처리
-- 예외 케이스 에러코드 , 메시지 등은 공통 Enum ErrorCode로 작성
-
 <br>
 
 ## *** 테스트 케이스
@@ -93,6 +84,9 @@
   - 검색 API
     - 성공
     - 요청 파라미터 검증 실패
+    - 카카오 장애 발생시 네이버 테스트 성공 <br>
+        --> 각 외부 검색 소스 연동이 ExternalPort로 분리되어있어 카카오 장애 발생시 네이버로 전송되는 테스트는 통합테스트에서 진행하였습니다.<br>
+        --> 장애상황은 카카오 ExternalAdapter 내 의도적으로 sleep을 주어 timeout을 발생시키게 하였습니다.
   - 인기 검색어 조회 API
     - 성공
 - 단위 테스트(UseCase)
@@ -109,6 +103,14 @@
   - sendBlogSearch()
     - 카카오 성공
     - 네이버 성공
-    - 카카오 오류 발생시 네이버 테스트 -> production 코드의 카카오톡 Adapter를 수정하여 진행함
-    - 테스트는 정상적으로 동작하였으나, 테스트코드 레벨에서 given으로 Webclient configure 설정을 수정하는 작업이 어려웠음.
-    
+
+
+<br>
+
+
+## *** 예외 처리(Exception Handling)
+
+- 서비스, 비즈니스의 모든 CheckedException은 CustomException으로 구현
+- CustomExceptionHandler 통해 Responseentity.status.body(ErrorResponse)형태로 리턴
+- ConstraintViolationException 필수파라미터 검증시 발생하는 오류도 핸들러에서 처리
+- 예외 케이스 에러코드 , 메시지 등은 공통 Enum ErrorCode로 작성
