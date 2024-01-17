@@ -1,0 +1,33 @@
+spring:
+
+  ## JPA
+  jpa:
+    database: h2
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+
+  ## DB
+  datasource:
+    url: jdbc:h2:mem:search-blog
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher #swagger 전략 default
+extsys:
+  kakao:
+    apikey: 38ed4f80289fa9d5997843af07e536d0
+    url: https://dapi.kakao.com
+  naver:
+    client:
+      id: gqEEc5hMZLEu6oNcNeJ_
+      secret: wFSjO33e2H
+    url: https://openapi.naver.com
+
